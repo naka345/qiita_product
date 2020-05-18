@@ -1,0 +1,28 @@
+FROM naka345/wheel_build:latest as wheel_build
+
+FROM python:3.8-alpine3.11
+COPY --from=wheel_build /tmp/whl /tmp/whl
+
+COPY require/c_require.txt /tmp
+COPY ./entrypoints/import_test.sh /tmp
+
+RUN apk update && \
+  apk add --virtual .build --no-cache openblas-dev lapack-dev freetype-dev \
+  gfortran g++ gcc zip unzip cmake make libpng-dev jpeg-dev libffi-dev && \
+  apk add --virtual .community_build  --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community hdf5-dev && \
+  pip install --upgrade --no-cache-dir pip setuptools wheel && \
+  pip install --no-cache-dir --no-index --find-links=/tmp/whl -r /tmp/c_require.txt && \
+  find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec scanelf --needed --nobanner --format '%n#p' '{}' ';' \
+      | tr ',' '\n' \
+      | sort -u \
+      | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+      | xargs -rt apk add --no-cache --virtual .module-rundeps && \
+  apk del --purge .build .community_build && \
+  find /usr/local -depth \
+  		\( \
+  			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
+  			-o \
+  			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+  		\) -exec rm -rf '{}' + && \
+  rm -rf /tmp/whl && \
+  /tmp/import_test.sh

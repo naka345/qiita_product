@@ -1,0 +1,15 @@
+FROM python:3.8-alpine3.11
+
+RUN apk update && \
+  apk add --virtual .build --no-cache openblas-dev lapack-dev freetype-dev \
+  gfortran g++ gcc zip unzip cmake make libpng-dev jpeg-dev libffi-dev && \
+  apk add --virtual .community_build  --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community hdf5-dev
+
+COPY require/c_require.txt /tmp
+RUN cd /tmp && mkdir whl && \
+  pip install -U --no-cache-dir pip setuptools wheel && \
+  pip install cython numpy==1.18.4 scipy==1.3.3 && \
+  pip wheel --no-cache --wheel-dir=./whl -r c_require.txt && \
+  apk del --purge .build .community_build && \
+  pip freeze | xargs pip uninstall -y && \
+  pip cache purge
