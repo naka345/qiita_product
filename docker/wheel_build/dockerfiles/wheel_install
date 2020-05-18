@@ -4,7 +4,7 @@ FROM python:3.8-alpine3.11
 COPY --from=wheel_build /tmp/whl /tmp/whl
 
 COPY require/c_require.txt /tmp
-COPY ./entrypoints/import_test.sh /tmp
+COPY ./script/import_test.sh /tmp
 
 RUN apk update && \
   apk add --virtual .build --no-cache openblas-dev lapack-dev freetype-dev \
