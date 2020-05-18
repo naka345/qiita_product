@@ -1,4 +1,4 @@
-# [multi stage build でpythonモジュールインストールする]()
+# [multi stage build でpythonのC言語依存モジュールをインストールする]()
 上記記事を書いた時に作成したdockerimage
 
 ./require/c_require.txtのモジュールを内包したpythonイメージを作成するためのdockerfileが含まれています
