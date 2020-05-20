@@ -1,11 +1,12 @@
 FROM python:3.8-alpine3.11
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk \
+
+ARG bazel_ver=3.1.0
+ENV JAVA_HOME=/usr/lib/jvm/default-jvm \
     PATH="$JAVA_HOME/bin:${PATH}" \
     BAZEL_VERSION=3.1.0
 
-RUN apk add --no-cache g++ gcc openjdk8 && \
-  apk add --virtual bazel_build --no-cache bash \
-  zip unzip cmake make linux-headers  && \
+RUN apk add --virtual .bazel_build --no-cache g++ gcc \
+  bash zip unzip cmake make linux-headers openjdk8 && \
   wget -q "https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-dist.zip" \
   -O bazel.zip && \
   mkdir "bazel-${BAZEL_VERSION}" && \
@@ -17,5 +18,5 @@ RUN apk add --no-cache g++ gcc openjdk8 && \
   EXTRA_BAZEL_ARGS=--host_javabase=@local_jdk//:jdk ./compile.sh && \
   cp -p output/bazel /usr/bin/ && \
   cd ../ && rm -rf "bazel-${BAZEL_VERSION}" && \
-  apk del --purge bazel_build && \
-  bazel version
+  bazel version && \
+  apk del --purge .bazel_build
