@@ -1,4 +1,4 @@
-# [alpineでbazelをビルドする]()
+# [alpineでbazelをビルドする](https://qiita.com/naka345/items/e8a052af0834cb9e581c)
 上記記事での生成物です
 
 ## 使い方
@@ -17,8 +17,8 @@ docker build -f ./dockerfiles/bazel_build -t bazel_build:latest ./ --build-arg b
 ## 注意点
 軽量化のためこのdockerイメージ単体ではbazelを利用できません。
 
-もし利用できるようにしたい場合は、`openjdk`を追加する必要があります。
+もし利用できるようにしたい場合は、`openjdk8`を追加する必要があります。
 
 ```
-apk add --virtual .bazel_build --no-cache
+apk add --no-cache openjdk8
 ```
