@@ -3,7 +3,8 @@ FROM python:3.8-alpine3.11
 WORKDIR /tmp
 COPY require/c_require.txt /tmp
 
-RUN apk update && \
+RUN pwd && \  ls && \
+  apk update && \
   apk add --virtual .build --no-cache openblas-dev lapack-dev freetype-dev \
   gfortran g++ gcc zip unzip cmake make libpng-dev jpeg-dev libffi-dev && \
   apk add --virtual .community_build  --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community hdf5-dev && \
