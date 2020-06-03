@@ -2,4 +2,3 @@
 echo $DOCKER_REPO
 echo $DOCKERFILE_PATH
 echo $IMAGE_NAME
-
