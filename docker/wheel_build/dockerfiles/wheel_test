@@ -3,6 +3,4 @@ FROM naka345/wheel_install
 COPY ./script/import_test.sh /tmp
 
 RUN apk update && \
-  apk add --virtual .test --no-cache bash && \
-  bash /tmp/import_test.sh && \
-  apk del --purge .test
+  apk add --virtual .test --no-cache bash
