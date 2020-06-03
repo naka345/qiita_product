@@ -16,3 +16,4 @@ services:
       dockerfile: ./dockerfiles/wheel_test
     depends_on:
       - wheel_install
+    command: bash /tmp/import_test.sh
