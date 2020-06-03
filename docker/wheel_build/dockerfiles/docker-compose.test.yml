@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 services:
   wheel_build:
     image: naka345/wheel_build:latest
