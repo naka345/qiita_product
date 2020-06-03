@@ -6,6 +6,7 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/wheel_install
+    image: naka345/wheel_install:latest
     depends_on:
       - wheel_build
   sut:
