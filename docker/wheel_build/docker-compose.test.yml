@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+  wheel_build:
+    image: naka345/wheel_build:latest
+  wheel_install:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/wheel_install
+    image: naka345/wheel_install:latest
+    depends_on:
+      - wheel_build
+  sut:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/wheel_test
+    depends_on:
+      - wheel_install
+    command: bash /tmp/import_test.sh
