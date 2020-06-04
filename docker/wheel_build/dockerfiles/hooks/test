@@ -1,7 +1,3 @@
 #!/bin/sh
-echo "here"
-pwd
-ls
-printenv
-
+echo "test phase"
 docker-compose -f ../docker-compose.test.yml up --build
